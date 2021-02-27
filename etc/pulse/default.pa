@@ -39,7 +39,7 @@ load-module module-augment-properties
 ### Load audio drivers statically
 ### (it's probably better to not load these drivers manually, but instead
 ### use module-udev-detect -- see below -- for doing this automatically)
-load-module module-waveout sink_name=output source_name=input record=0
+
 #load-module module-null-sink
 
 ### Automatically load driver modules depending on the hardware available
@@ -67,5 +67,10 @@ load-module module-jackdbus-detect
 #set-default-sink output
 #set-default-source input
 
-load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1;192.168.0.0/24 auth-anonymous=1
 #load-module module-zeroconf-publish
+#load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1;192.168.0.0/24 auth-anonymous=1
+
+#fragments=5 fragment_size=2 
+load-module module-waveout sink_name=output fragments=16 fragment_size=512  format=s16le rate=44100 source_name=input record=0
+load-module module-native-protocol-tcp port=4713 auth-ip-acl=127.0.0.1;192.168.0.0/24 auth-anonymous=1
+set-default-sink output
